@@ -1,0 +1,29 @@
+{
+  "name": "toasty",
+  "version": "1.0.0",
+  "description": "We do toasts",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js",
+    "test": "echo \"Error: no test specified\" && sexit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@truffle/hdwallet-provider": "^2.0.8",
+    "@walletconnect/web3-provider": "^1.7.0",
+    "chai": "^4.3.4",
+    "chai-as-promised": "^7.1.1",
+    "chai-bignumber": "^3.0.0",
+    "dotenv": "^10.0.0",
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "express-basic-auth": "^1.2.1",
+    "truffle-contract": "^4.0.2",
+    "web3": "^1.6.1"
+  }
+}
