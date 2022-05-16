@@ -55,11 +55,18 @@ Main = {
     Main.contracts.ToastyFinance.setProvider(Main.web3Provider)
 
     try {
-      Main.toast = await Main.contracts.Toast.deployed()
-      Main.toastyFinance = await Main.contracts.ToastyFinance.deployed()
+      let networkId = await web3.eth.net.getId()
+      if(networkId === 56){
+        Main.toast = await Main.contracts.Toast.at('0xe53080ec2faa685c51175dd631918c03655f7d36')
+        Main.toastyFinance = await Main.contracts.ToastyFinance.at('0xa363b56b1194478440a13379cc6ef1c781191f31')
+      }
+      else {
+        Main.toast = await Main.contracts.Toast.deployed()
+        Main.toastyFinance = await Main.contracts.ToastyFinance.deployed()
+      }
     }
     catch {
-      $('#network-alert').show()
+      alert('Wrong network. Please change to BSC mainnet.')
     }
   },
 
@@ -114,10 +121,18 @@ Main = {
     }
 
     Main.toastyAccount = await Main.toastyFinance.accounts(Main.account)
+    let lastUpdatedAt = Main.toastyAccount.updatedAt.toString()
+    lastUpdatedAt = parseInt(lastUpdatedAt)
+    lastUpdatedAt = new Date(lastUpdatedAt * 1000)
+
+    var options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric',  minute: 'numeric' }
+
+    $('#last-updatedAt').html(lastUpdatedAt.toLocaleDateString("en-US", options))
+
     let mainToastInAccount = Main.toEth(Main.toastyAccount.amount)
     // get rewards
     let timestamp = Math.round(new Date().getTime() / 1000)
-    let pendingRewards = await Main.toastyFinance.pendingRewards(timestamp)
+    let pendingRewards = await Main.toastyFinance.pendingRewards(timestamp, { from: Main.account })
 
     pendingRewards = parseFloat(Main.toEth(pendingRewards.toString()))
     let total = parseFloat(mainToastInAccount) + pendingRewards
@@ -129,7 +144,7 @@ Main = {
     let mainToastInAccount = Main.toEth(Main.toastyAccount.amount)
     setInterval(async () => {
       let timestamp = Math.round(new Date().getTime() / 1000)
-      let pendingRewards = await Main.toastyFinance.pendingRewards(timestamp)
+      let pendingRewards = await Main.toastyFinance.pendingRewards(timestamp, { from: Main.account })
       pendingRewards = parseFloat(Main.toEth(pendingRewards.toString()))
       let total = parseFloat(mainToastInAccount) + pendingRewards
       $('#toast-in-account').html(Math.round(total * 100) / 100) // round to 2 decimal
@@ -179,7 +194,7 @@ Main = {
     let mainToastInAccount = Main.toEth(Main.toastyAccount.amount)
     // get rewards
     let timestamp = Math.round(new Date().getTime() / 1000)
-    let pendingRewards = await Main.toastyFinance.pendingRewards(timestamp)
+    let pendingRewards = await Main.toastyFinance.pendingRewards(timestamp, { from: Main.account })
 
     pendingRewards = parseFloat(Main.toEth(pendingRewards.toString()))
     return parseFloat(mainToastInAccount) + pendingRewards
@@ -208,5 +223,7 @@ Main = {
 }
 
 $(() => {
-  $(window).load(() => { Main.load() })
+  $(window).load(() => {
+    Main.load()
+  })
 })

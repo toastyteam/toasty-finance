@@ -1,127 +1,178 @@
-<!doctype html>
-<html lang="en" class="h-100">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Toasty Finance">
-    <meta name="author" content="toastyteam">
-    <title>Toasty Finance</title>
-    <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link href="static/cover.css" rel="stylesheet">
-  </head>
-  <body class="h-100 text-center">
-    <div class="container h-100 p-3 mx-auto flex-column">
-      <header class="mb-auto"></header>
-
-      <main class="mt-3">
-        <div class="row">
-          <div class="offset-md-4 col-md-4 col-sm-12">
-          </div>
-
-          <div class="col-md-4 col-sm-12">
-            <a href="#" class="btn text-white bg-purple float-r" id='wallet'>👛 Connect wallet</a>
-          </div>
-        </div>
-
-        <br><br><br>
-
-        <div class="alert alert-warning u-hide" id='network-alert' role="alert">
-          Wrong network, please try Binance Smart Chain!
-        </div>
-
-        <div class="loading">
-          <img src="static/loading.gif" />
-        </div>
-
-        <div class="content u-hide">
-          <div class="row">
-            <div class="col-md-6 col-sm-12">
-              <div class="card bg-light-purple text-black h-100" >
-                <div class="card-body">
-                  <h5 class="card-title">Deposit TOAST</h5>
-                  <small>Balance: <span id='toast-balance'>0.0000</span> TOAST</small>
-                  <div class="input-group mb-3" style="width: 50%; margin: auto;">
-                    <input type="number" class="form-control" placeholder="Toast amount" id='deposit-input'>
-                    <button class="btn btn-outline-purple" type="button" id="deposit-max">Max</button>
-                  </div>
-
-                  <button type="button" id='deposit' style="display:none" class="btn bg-purple text-white">💰 Stake Toast</button>
-                  <button type="button" id='approve' style="display:none" class="btn bg-purple text-white">👍 Approve Toast</button>
-                </div>
-              </div>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+      <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700&amp;family=Inter:wght@500;600;700&amp;display=swap" rel="stylesheet">
+      <title>ToastyFinance</title>
+      <link href="static/style/style.css" rel="stylesheet">
+   </head>
+   <body>
+      <header class="app">
+         <nav class="flex between">
+            <a href="/" class="logo"><img src="static/img/logo.svg" alt=""> <img src="static/img/logo-light.svg" alt=""></a>
+            <div class="user flex">
+               <div class="icon flex"><img src="static/img/metamask.svg" alt=""></div>
+               <div class="content flex">
+                  <div class="status online"></div>
+                  <p class="base2" id='wallet' style="cursor:pointer">Connect wallet</p>
+               </div>
             </div>
-
-            <div class="col-md-6 col-sm-12">
-              <div class="card bg-light-purple text-black h-100" >
-                <div class="card-body">
-                  <h5 class="card-title">Withdraw TOAST</h5>
-                  <small>Staked TOAST: <span id='toast-in-account'>0.0000</span> TOAST</small>
-                  <div class="input-group mb-3" style="width: 50%; margin: auto;">
-                    <input type="number" class="form-control" placeholder="Toast amount" id='withdraw-input'>
-                    <button class="btn btn-outline-purple" type="button" id="withdraw-max">Max</button>
-                  </div>
-
-                  <button type="button" id='withdraw' style="display:none" class="btn bg-purple text-white">💰 Unstake Toast</button>
-                </div>
-              </div>
+         </nav>
+      </header>
+      <section class="result flex between">
+         <article>
+            <p class="base1">Your staked TOAST</p>
+            <h2 id='toast-in-account'>0</h2>
+         </article>
+         <article>
+            <p class="base1">Fixed APY</p>
+            <h2>1%/day</h2>
+         </article>
+         <article>
+            <p class="base1">Community members</p>
+            <h2>1,000+</h2>
+         </article>
+      </section>
+      <section class="app">
+         <article>
+            <div class="top flex between">
+               <h2>Deposit <span class="orange">TOAST</span></h2>
+               <div class="result">
+                  <h4 id='toast-balance'>0</h4>
+                  <p class="body2">TOAST In the wallet</p>
+               </div>
             </div>
-          </div>
-
-          <div class="row mt-5">
-            <div class="col-md-10 offset-md-1 col-sm-12">
-              <div class="card bg-light-purple text-black" >
-                <div class="card-body">
-                  <h5 class="card-title">Buy TOAST</h5>
-                  <p class="card-text">We give away one node per day to accounts that tweet about us!</p>
-                  <a class="btn text-white bg-purple" target="_blank" href="">
-                    Buy TOAST on PancakeSwap
+            <form>
+               <div class="group flex between">
+                  <input class="base1" placeholder="TOAST amount" id='deposit-input'>
+                  <div class="label base1-medium" id="deposit-max" style="cursor:pointer">MAX</div>
+               </div>
+               <button type="button" id='deposit' style="display:none" class="btn full base1">Stake TOAST</button>
+               <button type="button" id='approve' style="display:none" class="btn full base1">Approve TOAST</button>
+            </form>
+         </article>
+         <article>
+            <div class="top flex between">
+               <h2>Withdraw <span class="orange">TOAST</span></h2>
+               <div class="result"></div>
+            </div>
+            <form>
+               <div class="group flex between">
+                  <input class="base1" placeholder="TOAST amount" id='withdraw-input'>
+                  <div class="label base1-medium" id="withdraw-max" style="cursor:pointer">MAX</div>
+               </div>
+               <button class="btn full base1" id='withdraw'>Unstake TOAST</button>
+            </form>
+         </article>
+         <article>
+            <div class="top flex between">
+               <h2>Buy <span class="orange">TOAST</span></h2>
+               <div class="result"></div>
+            </div>
+            <div>
+               <p class="body2">Buy $TOAST and come back to this page to stake it!</p>
+               <a href="https://pancakeswap.finance/swap/0xe53080ec2faa685c51175dd631918c03655f7d36" target="_blank" class="btn flex full base1">Buy TOAST on PancakeSwap</a>
+            </div>
+         </article>
+         <article class="images flex">
+            <img src="static/img/app-main.png" alt=""> <img src="static/img/bread-noblur.svg" alt=""> <img src="static/img/bread-almostblur.png" alt=""> <img src="static/img/bread-blurred.png" alt="">
+            <div class="linear-gradient"></div>
+            <div class="linear-gradient"></div>
+         </article>
+         <article>
+            <div class="top flex between">
+               <h2>Last contract interaction</h2>
+               <div class="result"></div>
+            </div>
+            <div class="flex between">
+               <div class="data">
+                  <h5 class="base1"></h5>
+                  <p class="caption2"></p>
+               </div>
+               <div class="title" id='last-updatedAt'>0</div>
+            </div>
+         </article>
+      </section>
+      <footer>
+         <nav class="flex between">
+            <div class="mode flex">
+               <div id="light" class="active caption2 flex">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                     <circle cx="10" cy="10" r="3" stroke="#22252D" stroke-width="2"></circle>
+                     <line x1="10" y1="3" x2="10" y2="4" stroke="#22252D" stroke-width="2" stroke-linecap="round"></line>
+                     <line x1="4" y1="10" x2="3" y2="10" stroke="#22252D" stroke-width="2" stroke-linecap="round"></line>
+                     <line x1="17" y1="10" x2="16" y2="10" stroke="#22252D" stroke-width="2" stroke-linecap="round"></line>
+                     <line x1="10" y1="16" x2="10" y2="17" stroke="#22252D" stroke-width="2" stroke-linecap="round"></line>
+                     <line x1="14.8779" y1="4.97824" x2="14.1708" y2="5.68535" stroke="#22252D" stroke-width="2" stroke-linecap="round"></line>
+                     <line x1="5.6854" y1="5.68555" x2="4.97829" y2="4.97844" stroke="#22252D" stroke-width="2" stroke-linecap="round"></line>
+                     <line x1="14.8778" y1="14.8779" x2="14.1707" y2="14.1708" stroke="#22252D" stroke-width="2" stroke-linecap="round"></line>
+                     <line x1="5.68555" y1="14.1706" x2="4.97844" y2="14.8777" stroke="#22252D" stroke-width="2" stroke-linecap="round"></line>
+                  </svg>
+                  Light
+               </div>
+               <div id="dark" class="caption2 flex">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                     <path d="M15.9137 11.756C14.9837 13.6775 13.0162 15 10.7419 15C7.57072 15 5 12.4292 5 9.25815C5 6.9838 6.32247 5.01625 8.244 4.08635C8.28236 8.30503 11.6949 11.7176 15.9137 11.756Z" stroke="#22252D" stroke-width="2"></path>
+                  </svg>
+                  Dark
+               </div>
+            </div>
+            <menu class="flex">
+               <li><a href="#" class="base2">Connect With Us</a></li>
+               <li>
+                  <a href="#" class="base2">
+                     ToastyFinance Audit
+                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6.56456 4C3.55546 4.15313 2.66699 5.295 2.66699 8.65746C2.66699 12.2943 3.70634 13.3333 7.34407 13.3333C10.6903 13.3333 11.8379 12.4541 12.0003 9.69655" stroke="#494E5B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                        <path d="M8.66699 7.33332L13.3337 2.66666" stroke="#494E5B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                        <path d="M9.33398 2.66666H13.334V6.66666" stroke="#494E5B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                     </svg>
                   </a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <br><br><br>
-        </main>
-
-        <br><br><br><br>
-
-        <footer class="footer">
-          <small>
-            <a href="" target="_blank" class="text-black no-decor">Twitter</a> |
-            <a href="" target="_blank" class="text-black no-decor">Discord</a> |
-            <a href="" target="_blank" class="text-black no-decor">Docs</a> |
-            <a href="" target="_blank" class="text-black no-decor">Contracts</a>
-          </small>
-        </footer>
-        <br>
-      </div>
-    </div>
-
-    <!-- Tx alert Modal -->
-    <div class="modal" id="tx-alert" tabindex="-1" role="dialog">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Transaction pending</h5>
-          </div>
-          <div class="modal-body">
-            <p id='tx-message'></p>
-            <a id='tx-link' href="" target="_blank">View on BSC Scan</a>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary text-white" data-dismiss="modal" onclick="window.location.reload();">Close</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </body>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
-  <script src="scripts/web3/dist/web3.min.js"></script>
-  <script src="scripts/truffle-contract/dist/truffle-contract.min.js"></script>
-  <script src="static/main.js"></script>
+               </li>
+            </menu>
+            <a href="#" class="btn full base2 sm">Launch App</a>
+         </nav>
+         <div class="bottom flex between">
+            <p class="caption2">© Toasty Finance, 2022</p>
+            <menu class="flex">
+               <li>
+                  <a href="#">
+                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7.539 22.5C16.596 22.5 21.5505 14.9955 21.5505 8.499C21.5505 8.289 21.5505 8.076 21.5415 7.866C22.5061 7.16773 23.3386 6.30323 24 5.313C23.099 5.71028 22.1441 5.97211 21.1665 6.09C22.1963 5.47446 22.9676 4.50595 23.337 3.3645C22.3695 3.93769 21.3105 4.34006 20.2065 4.554C19.4643 3.76354 18.4821 3.23988 17.4121 3.06414C16.3422 2.8884 15.2441 3.07038 14.288 3.58191C13.3319 4.09343 12.5712 4.90595 12.1237 5.89359C11.6761 6.88124 11.5668 7.9889 11.8125 9.045C9.85461 8.94683 7.93922 8.4382 6.19056 7.55212C4.4419 6.66603 2.89903 5.42227 1.662 3.9015C1.03401 4.98613 0.842361 6.2691 1.12597 7.4899C1.40958 8.7107 2.14718 9.7778 3.189 10.4745C2.40831 10.448 1.64478 10.2383 0.96 9.8625V9.93C0.961346 11.0662 1.35496 12.1671 2.07431 13.0466C2.79366 13.9262 3.79462 14.5303 4.908 14.757C4.48539 14.8734 4.04884 14.9315 3.6105 14.9295C3.30148 14.9304 2.99307 14.9018 2.6895 14.844C3.00418 15.8221 3.61691 16.6773 4.44187 17.2897C5.26683 17.9022 6.2627 18.2413 7.29 18.2595C5.54483 19.6302 3.3891 20.3736 1.17 20.37C0.778981 20.3717 0.388235 20.3491 0 20.3025C2.25227 21.7384 4.86795 22.5008 7.539 22.5V22.5Z" fill="#494E5B"></path>
+                     </svg>
+                  </a>
+               </li>
+               <li>
+                  <a href="#">
+                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M24 12C24 15.1826 22.7357 18.2348 20.4853 20.4853C18.2348 22.7357 15.1826 24 12 24C8.8174 24 5.76516 22.7357 3.51472 20.4853C1.26428 18.2348 0 15.1826 0 12C0 8.8174 1.26428 5.76516 3.51472 3.51472C5.76516 1.26428 8.8174 0 12 0C15.1826 0 18.2348 1.26428 20.4853 3.51472C22.7357 5.76516 24 8.8174 24 12V12ZM12.4305 8.859C11.2635 9.345 8.9295 10.35 5.4315 11.874C4.8645 12.099 4.566 12.321 4.539 12.537C4.494 12.9015 4.9515 13.0455 5.574 13.242L5.8365 13.3245C6.4485 13.524 7.2735 13.7565 7.701 13.7655C8.091 13.7745 8.5245 13.6155 9.003 13.2855C12.2715 11.079 13.959 9.9645 14.064 9.9405C14.139 9.9225 14.244 9.9015 14.313 9.9645C14.3835 10.026 14.376 10.1445 14.3685 10.176C14.3235 10.3695 12.528 12.0375 11.5995 12.9015C11.31 13.1715 11.1045 13.362 11.0625 13.4055C10.97 13.5 10.876 13.593 10.7805 13.6845C10.2105 14.2335 9.7845 14.6445 10.803 15.3165C11.2935 15.6405 11.6865 15.906 12.078 16.173C12.504 16.464 12.93 16.7535 13.482 17.1165C13.6215 17.2065 13.7565 17.304 13.887 17.397C14.3835 17.751 14.832 18.069 15.3825 18.018C15.7035 17.988 16.035 17.688 16.203 16.788C16.6005 14.6625 17.382 10.059 17.562 8.1615C17.573 8.00376 17.5664 7.8453 17.5425 7.689C17.5284 7.56288 17.4673 7.44669 17.3715 7.3635C17.235 7.26928 17.0723 7.22047 16.9065 7.224C16.4565 7.2315 15.762 7.473 12.4305 8.859V8.859Z" fill="#494E5B"></path>
+                     </svg>
+                  </a>
+               </li>
+               <li>
+                  <a href="#">
+                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g clip-path="url(#clip0_2620_21847)">
+                           <path d="M20.3178 4.36056C18.7615 3.64636 17.1194 3.13662 15.4323 2.84406C15.417 2.84149 15.4013 2.84371 15.3873 2.85042C15.3733 2.85714 15.3618 2.86802 15.3543 2.88156C15.1428 3.25656 14.9088 3.74706 14.7453 4.13106C12.9267 3.85507 11.0768 3.85507 9.25825 4.13106C9.07587 3.70329 8.86955 3.28613 8.64025 2.88156C8.63256 2.86816 8.62099 2.85741 8.60707 2.85072C8.59314 2.84403 8.57752 2.8417 8.56225 2.84406C6.87475 3.13506 5.23225 3.64506 3.67675 4.36056C3.66344 4.36564 3.65231 4.37518 3.64525 4.38756C0.534254 9.03606 -0.319247 13.5706 0.0992534 18.0481C0.100753 18.0691 0.114253 18.0901 0.130753 18.1036C1.94234 19.4455 3.96864 20.47 6.12325 21.1336C6.13847 21.1384 6.15481 21.1382 6.16992 21.1331C6.18503 21.1279 6.1981 21.1181 6.20725 21.1051C6.66925 20.4751 7.08025 19.8106 7.43425 19.1116C7.44163 19.0972 7.44416 19.0808 7.44146 19.0648C7.43875 19.0489 7.43096 19.0342 7.41925 19.0231C7.4115 19.0157 7.40231 19.0101 7.39225 19.0066C6.746 18.7582 6.1201 18.4598 5.52025 18.1141C5.5035 18.1046 5.49104 18.089 5.48545 18.0706C5.47987 18.0521 5.48159 18.0323 5.49025 18.0151C5.49536 18.0039 5.50308 17.9941 5.51275 17.9866C5.63875 17.8921 5.76475 17.7931 5.88475 17.6941C5.89535 17.6855 5.90807 17.6801 5.92155 17.6782C5.93502 17.6764 5.94875 17.6782 5.96125 17.6836C9.88975 19.4776 14.1423 19.4776 18.0228 17.6836C18.0357 17.6779 18.05 17.676 18.064 17.6778C18.078 17.6797 18.0912 17.6853 18.1023 17.6941C18.2223 17.7931 18.3483 17.8921 18.4743 17.9866C18.4845 17.994 18.4927 18.0039 18.4981 18.0153C18.5036 18.0267 18.5061 18.0393 18.5055 18.0519C18.5049 18.0646 18.5012 18.0768 18.4947 18.0877C18.4882 18.0985 18.4791 18.1076 18.4683 18.1141C17.8698 18.463 17.2431 18.761 16.5948 19.0051C16.5844 19.0088 16.575 19.0148 16.5672 19.0226C16.5595 19.0303 16.5535 19.0397 16.5498 19.0501C16.5463 19.0601 16.5449 19.0707 16.5457 19.0813C16.5464 19.0918 16.5494 19.1022 16.5543 19.1116C16.9143 19.8091 17.3268 20.4751 17.7798 21.1051C17.7889 21.1181 17.802 21.1279 17.8171 21.1331C17.8322 21.1382 17.8485 21.1384 17.8638 21.1336C20.022 20.4721 22.0516 19.4474 23.8653 18.1036C23.8743 18.0973 23.8819 18.089 23.8873 18.0794C23.8928 18.0698 23.896 18.0591 23.8968 18.0481C24.3978 12.8716 23.0583 8.37456 20.3478 4.38906C20.345 4.38248 20.3409 4.37654 20.3358 4.37163C20.3306 4.36672 20.3245 4.36295 20.3178 4.36056V4.36056ZM8.02075 15.3211C6.83725 15.3211 5.86375 14.2351 5.86375 12.9031C5.86375 11.5696 6.81925 10.4836 8.02075 10.4836C9.23125 10.4836 10.1958 11.5786 10.1778 12.9031C10.1778 14.2351 9.22225 15.3211 8.02075 15.3211ZM15.9948 15.3211C14.8128 15.3211 13.8378 14.2351 13.8378 12.9031C13.8378 11.5696 14.7933 10.4836 15.9948 10.4836C17.2053 10.4836 18.1713 11.5786 18.1518 12.9031C18.1518 14.2351 17.2053 15.3211 15.9948 15.3211Z" fill="#494E5B"></path>
+                        </g>
+                        <defs>
+                           <clipPath id="clip0_2620_21847">
+                              <rect width="24" height="24" fill="white"></rect>
+                           </clipPath>
+                        </defs>
+                     </svg>
+                  </a>
+               </li>
+            </menu>
+         </div>
+      </footer>
+      <script src="static/js/script.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+      <script src="scripts/web3/dist/web3.min.js"></script>
+      <script src="scripts/truffle-contract/dist/truffle-contract.min.js"></script>
+      <script src="static/js/main.js"></script>
+   </body>
 </html>
