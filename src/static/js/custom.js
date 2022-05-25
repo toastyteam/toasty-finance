@@ -34,7 +34,7 @@ function modeSwitcher(dark) {
 }
 
 // LP countdown
-var countDownDate = new Date("May 30, 2022 13:00:00").getTime()
+var countDownDate = new Date("May 26, 2022 14:00:00").getTime()
 function calcTime() {
   var now = new Date().getTime()
   // Find the distance between now and the count down date
