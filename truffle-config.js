@@ -32,4 +32,8 @@ module.exports = {
       version: "0.8.11",    // Fetch exact version from solc-bin (default: truffle's version)
     }
   },
+  plugins: ['truffle-plugin-verify'],
+  api_keys: {
+    bscscan: process.env.BSCSCAN_API_KEY
+  }
 }

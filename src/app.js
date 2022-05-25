@@ -14,9 +14,14 @@ app.get('/', (req, res) => {
   res.render('index')
 })
 
-// app.get('/app', (req, res) => {
-//   res.render('app')
-// })
+app.get('/app', (req, res) => {
+  if(req.query.pass === '8426'){
+    res.render('app')
+  }
+  else {
+    res.send('not yet')
+  }
+})
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
