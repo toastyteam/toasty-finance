@@ -15,12 +15,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/app', (req, res) => {
-  if(req.query.pass === '8426'){
-    res.render('app')
-  }
-  else {
-    res.send('not yet')
-  }
+  res.render('app')
 })
 
 app.listen(port, () => {
