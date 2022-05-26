@@ -34,7 +34,7 @@ function modeSwitcher(dark) {
 }
 
 // LP countdown
-var countDownDate = new Date("May 26, 2022 14:00:00").getTime()
+var countDownDate = new Date(Date.UTC(2022, 4, 26, 14, 0, 0)).getTime()
 function calcTime() {
   var now = new Date().getTime()
   // Find the distance between now and the count down date
@@ -46,7 +46,7 @@ function calcTime() {
   var seconds = Math.floor((distance % (1000 * 60)) / 1000)
 
   document.getElementById("days").innerHTML = days
-  document.getElementById("hours").innerHTML = hours
+  document.getElementById("hours").innerHTML = hours - 1
   document.getElementById("minutes").innerHTML = minutes
   document.getElementById("seconds").innerHTML = seconds
 
@@ -58,7 +58,7 @@ function calcTime() {
   }
 }
 
-
+// Main
 calcTime()
 
 setInterval(function() {
